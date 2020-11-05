@@ -17,7 +17,7 @@ export default {
   },
   computed: {
     queue() {
-      return this.$root.$data.QueueList;
+      return this.$root.$data.queue;
     }
   }
 }

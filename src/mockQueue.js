@@ -1,20 +1,21 @@
-let mockQueue = [{
+let mockQueue = [
+  {
     id: 1,
+    name: 'The Boulder',
+    question: 'The Boulder has issue with that comment',
+    image: 'The_Boulder.png'
+  },
+  {
+    id: 2,
     name: "SparkySparky BoomMan",
     question: "...",
     image: 'images.jfif'
   },
   {
-    id: 2,
+    id: 3,
     name: 'Chong',
     question: 'SECRET TUNNEL',
     image: 'Chong.png'
-  },
-  {
-    id: 3,
-    name: 'The Boulder',
-    question: 'The Boulder has issue with that comment',
-    image: 'The_Boulder.png'
   }
 ]
 

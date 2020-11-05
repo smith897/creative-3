@@ -10,7 +10,18 @@
 
 <style>
 * {
-  background-color: #EFEFEF;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
+}
+
+#app {
+  height: 100%;
+  width: 100%;
 }
 
 #app {
@@ -19,6 +30,7 @@
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  background-color: #EFEFEF;
 }
 
 #nav {
