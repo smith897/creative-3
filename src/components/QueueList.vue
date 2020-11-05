@@ -12,6 +12,9 @@
           <p>{{student.question}}</p>
         </div>
       </div>
+      <div class="helpButtonHolder" v-if="fromTA">
+        <h2 class="helpButton" v-if="fromTA">Help</h2>
+      </div>
     </div>
   </div>
 </div>
@@ -21,7 +24,8 @@
 export default {
   name: 'QueueList',
   props: {
-    queue: Array
+    queue: Array,
+    fromTA: Boolean
   },
 }
 </script>
@@ -41,7 +45,7 @@ export default {
 .student {
   border-width: medium;
   border-style: solid;
-  border-color: black;
+  border-color: #A9A9A9;
 
   background-color: #CAEBF2;
   display: flex;
@@ -65,7 +69,7 @@ export default {
 .informationHolder {
   display: flex;
   flex-direction: column;
-  flex: 1;
+  flex: 2;
   justify-content: flex-start;
   align-items: center;
   background-color: inherit;
@@ -78,5 +82,22 @@ export default {
 
 .question {
   margin-bottom: 0.5em;
+}
+
+.helpButtonHolder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+}
+
+.helpButton {
+  padding: 0.5em 1em 0.5em 1em;
+  background-color: #FF3B3F;
+  color: #EFEFEF;
+
+  border-width: thin;
+  border-style: solid;
+  border-color: black;
 }
 </style>

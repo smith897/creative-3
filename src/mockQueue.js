@@ -7,7 +7,7 @@ let mockQueue = [
   },
   {
     id: 2,
-    name: "SparkySparky BoomMan",
+    name: "Sparky Sparky Boom Man",
     question: "...",
     image: 'images.jfif'
   },
