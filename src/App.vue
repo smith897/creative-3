@@ -2,9 +2,11 @@
   <div id="app">
     <div id="nav">
       <router-link to="/">Student</router-link> |
-      <router-link to="/TA">TA</router-link>
+      <router-link to="/TA">TA</router-link> |
+      <router-link to="/FAQPage">FAQ</router-link>
     </div>
     <router-view/>
+    <a class="footer" href="https://github.com/smith897/creative-3">Github</a>
   </div>
 </template>
 
@@ -17,6 +19,7 @@
 html, body {
   height: 100%;
   width: 100%;
+  background-color: #EFEFEF;
 }
 
 #app {
@@ -30,7 +33,7 @@ html, body {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  background-color: #EFEFEF;
+
 }
 
 #nav {

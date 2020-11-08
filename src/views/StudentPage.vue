@@ -12,7 +12,7 @@ import HelloWorld from '@/components/HelloWorld.vue'
 import QueueList from '../components/QueueList.vue'
 import GetHelpToolbar from '../components/GetHelpToolbar'
 export default {
-  name: 'Student',
+  name: 'StudentPage',
   components: {
     HelloWorld,
     QueueList,
