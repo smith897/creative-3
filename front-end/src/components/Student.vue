@@ -61,26 +61,24 @@ export default {
     getIsMe() {
       if (this.id === this.$root.$data.myID) {
         return true;
-      }
-      else {
+      } else {
         return false;
       }
     }
   },
   methods: {
     async updateHelping() {
-        console.log("Helping the student"); //FIXME for testing
+      console.log("Helping the student"); //FIXME for testing
 
-        //FIXME untested, successfully calls the API but haven't tried using the params
-        try {
-          await axios.put("/session/join.php/", {
-            params: {
-              StudentID: this.id
-            }
-          });
-        } catch(error) {
-          console.log("Error helping student");
-        }
+      //FIXME untested, successfully calls the API but haven't tried using the params
+      try {
+        await axios.put("/session/join.php/", {
+          StudentID: "6543",
+          TaID: "Roku"
+        });
+      } catch (error) {
+        console.log("Error helping student");
+      }
       // this.$forceUpdate(); //Do I need this? Computationally expensive?
     },
     removeItem() {

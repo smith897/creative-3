@@ -39,19 +39,40 @@ const HelpSession = new mongoose.model('HelpSession', helpSessionSchema);
 app.put('/session/join.php/', async (req, res) => {
   try {
     console.log("Joining a session!");
-    // let session = await HelpSession.findOne({id: req.params.student.id});
-    // let ta = await TA.findOne({id: req.params.taId});
-    // session.ta = ta;
-    // session.markModified('ta');
-    // ta.save();
-    // res.sendStatus(200);
+    console.log(req.body);
+    let session = await HelpSession.findOne({id: "Test"});
+    //let ta = await TA.findOne({id: req.body.TaID}); //Real one
+
+    //FIXME for testing
+    let ta = new TA({
+      id: "ROKU",
+      name: "Roku",
+      zoom_link: "join.me"
+    })
+
+    session.ta = ta;
+    session.markModified('ta');
+    session.save();
+    res.sendStatus(200);
+
   } catch(error) {
     console.log(error);
     res.sendStatus(500);
   }
 });
 
-
+//FIXME for when you add to database
+// console.log("Putting something in the db");
+// const session = new HelpSession({
+//   id: "Test",
+//   name: "Test",
+//   ta: null,
+//   question: "Test",
+//   location: "Test"
+// });
+// await session.save();
+// console.log("Did it!");
+// res.send(session);
 
 //Finally, start the server
 app.listen(3001, () => console.log('Server listening on port 3001!'));
