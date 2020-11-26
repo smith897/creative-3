@@ -34,6 +34,26 @@ const helpSessionSchema = new mongoose.Schema({
 const HelpSession = new mongoose.model('HelpSession', helpSessionSchema);
 
 
+//FIXME working on
+app.put('/session/create.php', async (req, res) => {
+  try {
+    //FIXME for when you add to database
+    console.log("Putting something in the db");
+    const session = new HelpSession({
+      id: "Test",
+      name: "Test",
+      ta: null,
+      question: "Test",
+      location: "Test"
+    });
+    await session.save();
+    console.log("Did it!");
+    res.send(session);
+  } catch(error) {
+    console.log(error);
+    res.sendStatus(500);
+  }
+})
 
 //Make endpoints
 app.put('/session/join.php/', async (req, res) => {
@@ -41,14 +61,16 @@ app.put('/session/join.php/', async (req, res) => {
     console.log("Joining a session!");
     console.log(req.body);
     let session = await HelpSession.findOne({id: "Test"});
-    //let ta = await TA.findOne({id: req.body.TaID}); //Real one
+    let ta = await TA.findOne({id: req.body.TaID}); //Real one
 
-    //FIXME for testing
+    //TA database won't be altered through this website, the back end will just
+    //get information from it, so for this project I'll just use a dummy TA
     let ta = new TA({
       id: "ROKU",
       name: "Roku",
       zoom_link: "join.me"
     })
+    ta.save();
 
     session.ta = ta;
     session.markModified('ta');
@@ -60,19 +82,6 @@ app.put('/session/join.php/', async (req, res) => {
     res.sendStatus(500);
   }
 });
-
-//FIXME for when you add to database
-// console.log("Putting something in the db");
-// const session = new HelpSession({
-//   id: "Test",
-//   name: "Test",
-//   ta: null,
-//   question: "Test",
-//   location: "Test"
-// });
-// await session.save();
-// console.log("Did it!");
-// res.send(session);
 
 //Finally, start the server
 app.listen(3001, () => console.log('Server listening on port 3001!'));

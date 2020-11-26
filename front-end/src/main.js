@@ -11,7 +11,8 @@ let data = {
   queue: mockQueue,
   faq: mockFAQ,
   inQueue: false, //Global cus I'm guessing when this gets updated this'll be the easiest place to update it
-  myID: 'ROKUSID'
+  myID: 'ROKUSID',
+  myName: 'Roku'
 }
 
 new Vue({

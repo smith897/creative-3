@@ -27,16 +27,25 @@ export default {
     }
   },
   methods: {
-    updateMeOnQueue() {
+    async updateMeOnQueue() {
       if (!this.$root.$data.inQueue) {
-        let newQuestion = {
+        // let newQuestion = {
+        //   id: this.$root.$data.myID,
+        //   position: this.$root.$data.queue.length + 1,
+        //   name: 'Roku',
+        //   question: this.question,
+        //   timeWaiting: 0,
+        //   image: 'Roku.png'
+        // }
+        //FIXME working on
+        await axios.put("/session/create.php/", {
           id: this.$root.$data.myID,
-          position: this.$root.$data.queue.length + 1,
-          name: 'Roku',
+          name: this.$root.$data.myName,
+          ta: null,
           question: this.question,
-          timeWaiting: 0,
-          image: 'Roku.png'
-        }
+          location: "Test"
+        });
+
         this.$root.$data.queue.push(newQuestion);
         this.question = '';
         this.buttonText = 'Leave Queue'
