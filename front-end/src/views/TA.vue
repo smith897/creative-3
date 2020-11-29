@@ -1,7 +1,7 @@
 <template>
   <div class="TAWrapper">
     <HelloWorld msg="Welcome to the CS 142 Help Center"/>
-    <QueueList :queue="queue" :fromTA='true'/>
+    <QueueList :queue="sessions" :fromTA='true'/>
   </div>
 </template>
 
@@ -9,15 +9,29 @@
 // @ is an alias to /src
 import HelloWorld from '@/components/HelloWorld.vue'
 import QueueList from '../components/QueueList.vue'
+import axios from 'axios';
 export default {
   name: 'Student',
   components: {
     HelloWorld,
     QueueList
   },
-  computed: {
-    queue() {
-      return this.$root.$data.queue;
+  created() {
+    this.getSessions();
+  },
+  data() {
+    return {
+      sessions: [],
+    }
+  },
+  methods: {
+    async getSessions() {
+      try {
+        let response = await axios.get("/foobar/get-public-sessions.php");
+        this.sessions = response.data;
+      } catch (error) {
+        console.log(error);
+      }
     }
   }
 }

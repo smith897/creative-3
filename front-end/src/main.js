@@ -11,8 +11,8 @@ let data = {
   queue: mockQueue,
   faq: mockFAQ,
   inQueue: false, //Global cus I'm guessing when this gets updated this'll be the easiest place to update it
-  myID: 'ROKUSID',
-  myName: 'Roku'
+  myID: 'MYID', //TODO set to student id or TA id (Not in this project)
+  myName: 'Roku' //TODO set to student's name (Not in this project)
 }
 
 new Vue({

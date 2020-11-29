@@ -3,7 +3,7 @@
   <h2 class="title">Help Queue:</h2>
   <div class="students">
     <div class="student" v-for="student in queue" :key="student.id">
-      <Student :name="student.name" :id="student.id" :position="student.position" :imagePath="student.image" :question="student.question" :timeWating="student.timeWaiting" :fromTA='fromTA'/>
+      <Student :name="student.name" :id="student.id" :position="student.position" :imagePath="student.image" :question="student.question" :timeWating="student.timeWaiting" :ta="student.ta" :fromTA='fromTA' />
     </div>
   </div>
 </div>
@@ -18,7 +18,8 @@ export default {
   },
   props: {
     queue: Array,
-    fromTA: Boolean
+    fromTA: Boolean,
+    TAs: Array
   },
 }
 </script>

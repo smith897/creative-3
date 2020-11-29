@@ -10,6 +10,7 @@
 </template>
 
 <script>
+import axios from 'axios';
 export default {
   name: 'GetHelpToolbar',
   props: {
@@ -29,36 +30,38 @@ export default {
   methods: {
     async updateMeOnQueue() {
       if (!this.$root.$data.inQueue) {
-        // let newQuestion = {
-        //   id: this.$root.$data.myID,
-        //   position: this.$root.$data.queue.length + 1,
-        //   name: 'Roku',
-        //   question: this.question,
-        //   timeWaiting: 0,
-        //   image: 'Roku.png'
-        // }
         //FIXME working on
-        await axios.put("/session/create.php/", {
-          id: this.$root.$data.myID,
-          name: this.$root.$data.myName,
-          ta: null,
-          question: this.question,
-          location: "Test"
-        });
-
-        this.$root.$data.queue.push(newQuestion);
+        try {
+          await axios.put("/session/create.php/", {
+            id: this.$root.$data.myID,
+            name: this.$root.$data.myName,
+            ta: null,
+            question: this.question,
+            location: "Test" //TODO set to actual location
+          });
+          //FIXME update the queue here
+          this.$forceUpdate(); //FIXME testing, will this work?
+        } catch (error) {
+          console.log(error);
+        }
         this.question = '';
         this.buttonText = 'Leave Queue'
         this.$root.$data.inQueue = true;
         document.getElementById("questionEnterText").disabled = true;
-      }
-      else {
-        var index = this.$root.$data.queue.indexOf(this); //FIXME doesn't find it, don't think will work if not last in queue
-        this.$root.$data.queue.splice(index, 1);
+      } else {
+        try {
+          await axios.delete('/session/leave.php', {
+            id: this.$root.$data.myID, //FIXME the findByIdAndRemove doesn't work, wrong kind of ID being passed in?
+          });
+        } catch (error) {
+          console.log(error);
+        }
         this.buttonText = 'Get Help'
         this.$root.$data.inQueue = false;
         document.getElementById("questionEnterText").disabled = false;
       }
+      //FIXME update the queue here
+      this.$forceUpdate(); //FIXME doesn't work
     }
   }
 }

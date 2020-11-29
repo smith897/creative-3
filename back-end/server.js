@@ -16,7 +16,7 @@ mongoose.connect('mongodb://localhost:27017/queue', {
 
 
 
-//Make models
+//Models
 const taSchema = new mongoose.Schema({
   id: String,
   name: String,
@@ -34,20 +34,41 @@ const helpSessionSchema = new mongoose.Schema({
 const HelpSession = new mongoose.model('HelpSession', helpSessionSchema);
 
 
-//FIXME working on
+
+//Endpoints
+//Delete operation
+app.delete('/session/leave.php', async (req, res) => {
+  try {
+    await HelpSession.findByIdAndRemove(req.body.id); //FIXME doesn't work
+    res.sendStatus(200);
+  } catch (error) {
+    console.log(error);
+    res.sendStatus(500);
+  }
+})
+
+//Read operation
+app.get('/foobar/get-public-sessions.php', async (req, res) => {
+  try {
+    let sessions = await HelpSession.find();
+    res.send(sessions);
+  } catch (error) {
+    console.log(error);
+    res.sendStatus(500);
+  }
+});
+
+//Create operation
 app.put('/session/create.php', async (req, res) => {
   try {
-    //FIXME for when you add to database
-    console.log("Putting something in the db");
     const session = new HelpSession({
-      id: "Test",
-      name: "Test",
+      id: req.body.id,
+      name: req.body.name,
       ta: null,
-      question: "Test",
-      location: "Test"
+      question: req.body.question,
+      location: req.body.location
     });
     await session.save();
-    console.log("Did it!");
     res.send(session);
   } catch(error) {
     console.log(error);
@@ -55,21 +76,20 @@ app.put('/session/create.php', async (req, res) => {
   }
 })
 
-//Make endpoints
+//Update operation
 app.put('/session/join.php/', async (req, res) => {
   try {
-    console.log("Joining a session!");
-    console.log(req.body);
-    let session = await HelpSession.findOne({id: "Test"});
-    let ta = await TA.findOne({id: req.body.TaID}); //Real one
+    console.log("Seaching with id: " + req.body.StudentID);
+    let session = await HelpSession.findOne({id: req.body.StudentID});
 
     //TA database won't be altered through this website, the back end will just
     //get information from it, so for this project I'll just use a dummy TA
     let ta = new TA({
-      id: "ROKU",
-      name: "Roku",
+      id: req.body.TaID,
+      name: "TestTA",
       zoom_link: "join.me"
     })
+    //let ta = await TA.findOne({id: req.body.TaID}); //Real one
     ta.save();
 
     session.ta = ta;

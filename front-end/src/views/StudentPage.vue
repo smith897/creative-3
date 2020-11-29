@@ -1,26 +1,40 @@
 <template>
-  <div class="studentWrapper">
-    <HelloWorld msg="Welcome to the CS 142 Help Center"/>
-    <QueueList :queue="queue" :fromTA='false'/>
-    <GetHelpToolbar :questionsRemaining='5'/>
-  </div>
+<div class="studentWrapper">
+  <HelloWorld msg="Welcome to the CS 142 Help Center" />
+  <QueueList :queue="sessions" :fromTA='false' />
+  <GetHelpToolbar :questionsRemaining='5' />
+</div>
 </template>
 
 <script>
 // @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
-import QueueList from '../components/QueueList.vue'
-import GetHelpToolbar from '../components/GetHelpToolbar'
+import HelloWorld from '@/components/HelloWorld.vue';
+import QueueList from '../components/QueueList.vue';
+import GetHelpToolbar from '../components/GetHelpToolbar';
+import axios from 'axios';
 export default {
   name: 'StudentPage',
+  data() {
+    return {
+      sessions: [],
+    }
+  },
+  created() {
+    this.getSessions();
+  },
   components: {
     HelloWorld,
     QueueList,
     GetHelpToolbar
   },
-  computed: {
-    queue() {
-      return this.$root.$data.queue;
+  methods: {
+    async getSessions() {
+      try {
+        let response = await axios.get("/foobar/get-public-sessions.php");
+        this.sessions = response.data;
+      } catch (error) {
+        console.log(error);
+      }
     }
   }
 }

@@ -1,12 +1,12 @@
 <template>
 <div class="wrapper">
-  <div class="student" v-bind:class="{beingHelped: getIsHelped, isMe: getIsMe}">
+  <div class="student" v-bind:class="{beingHelped: getIsHelped, isMe: getIsMe, isHelpedByMe: getIsHelpedByMe}">
     <div class="firstRowHolder">
       <div class="positionHolder">
         <p class="position">{{position}}</p>
       </div>
       <div class="imageHolder">
-        <img class="image" :src="'/images/'+imagePath">
+        <img class="image" :src="'/images/Chong.png'"> <!-- FIXME set to real image or delete -->
       </div>
       <div class="nameHolder">
         <h2 class="name">{{name}}</h2>
@@ -43,13 +43,15 @@ export default {
     position: Number,
     imagePath: String,
     question: String,
-    timeWating: Number,
-    fromTA: Boolean
+    timeWating: Number, //FIXME incorporate times into API and calculate
+    fromTA: Boolean,
+    ta: Array
   },
   data() {
     return {
       isHelped: false,
       isMe: false,
+      isHelpedByMe: false,
       helper: 'No one',
       helpButtonText: 'Help'
     }
@@ -58,8 +60,20 @@ export default {
     getIsHelped() {
       return this.isHelped;
     },
+    getIsHelpedByMe() {
+      if (!this.fromTA) return false;
+      if (this.ta != null) {
+        for (var i = 0; i < this.ta.length; i++) {
+          if (this.ta[i].id === this.$root.$data.myID) {
+            return true;
+          }
+        }
+      }
+      return false;
+    },
     getIsMe() {
-      if (this.id === this.$root.$data.myID) {
+      if (this.fromTA) return false;
+      else if (this.id === this.$root.$data.myID) {
         return true;
       } else {
         return false;
@@ -69,17 +83,18 @@ export default {
   methods: {
     async updateHelping() {
       console.log("Helping the student"); //FIXME for testing
-
-      //FIXME untested, successfully calls the API but haven't tried using the params
       try {
+        console.log("Giving Student Id: " + this.id);
+        console.log("Giving TA Id:" + this.$root.$data.myID);
         await axios.put("/session/join.php/", {
-          StudentID: "6543",
-          TaID: "Roku"
+          StudentID: this.id,
+          TaID: this.$root.$data.myID
         });
       } catch (error) {
         console.log("Error helping student");
+        console.log(error);
       }
-      // this.$forceUpdate(); //Do I need this? Computationally expensive?
+      // FIXME refresh the page here?
     },
     removeItem() {
       var index = this.$root.$data.queue.indexOf(this); //FIXME doesn't find it, if you want the student to be removed this needs to be fixed
@@ -122,6 +137,11 @@ export default {
 
 .isMe {
   border-color: #FF3B3F;
+}
+
+/* FIXME testing */
+.isHelpedByMe {
+  border-color: #000000;
 }
 
 .firstRowHolder {
