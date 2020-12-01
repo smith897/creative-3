@@ -83,13 +83,14 @@ export default {
   methods: {
     async updateHelping() {
       try {
-        await axios.put("/session/join.php/", {
+        await axios.put("/api/session/join.php/", {
           StudentID: this.id,
           TaID: this.$root.$data.myID
         });
       } catch (error) {
         console.log(error);
       }
+      location.reload(); //Reloads the page
     },
   }
 }

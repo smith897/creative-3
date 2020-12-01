@@ -38,10 +38,8 @@ const HelpSession = new mongoose.model('HelpSession', helpSessionSchema);
 
 //Endpoints
 //Delete operation
-app.delete('/session/leave.php/:id', async (req, res) => {
-  console.log("ID: " + req.params.id);
+app.delete('/api/session/leave.php/:id', async (req, res) => {
   try {
-    // await HelpSession.findByIdAndRemove(req.params.id); //FIXME doesn't work
     await HelpSession.deleteOne({
       id: req.params.id
     });
@@ -53,7 +51,7 @@ app.delete('/session/leave.php/:id', async (req, res) => {
 })
 
 //Read operation
-app.get('/foobar/get-public-sessions.php', async (req, res) => {
+app.get('/api/foobar/get-public-sessions.php', async (req, res) => {
   try {
     let sessions = await HelpSession.find();
     res.send(sessions);
@@ -64,7 +62,7 @@ app.get('/foobar/get-public-sessions.php', async (req, res) => {
 });
 
 //Create operation
-app.put('/session/create.php', async (req, res) => {
+app.put('/api/session/create.php', async (req, res) => {
   try {
     const session = new HelpSession({
       id: req.body.id,
@@ -82,9 +80,8 @@ app.put('/session/create.php', async (req, res) => {
 })
 
 //Update operation
-app.put('/session/join.php/', async (req, res) => {
+app.put('/api/session/join.php/', async (req, res) => {
   try {
-    console.log("Seaching with id: " + req.body.StudentID);
     let session = await HelpSession.findOne({id: req.body.StudentID});
 
     //TA database won't be altered through this website, the back end will just

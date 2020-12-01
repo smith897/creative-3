@@ -54,7 +54,7 @@ export default {
     },
     async joinQueue() {
       try {
-        await axios.put("/session/create.php/", {
+        await axios.put("/api/session/create.php/", {
           id: this.$root.$data.myID,
           name: this.$root.$data.myName,
           ta: null,
@@ -68,7 +68,7 @@ export default {
     async leaveQueue() {
       try {
         let testID = this.$root.$data.myID;
-        await axios.delete('/session/leave.php/' + testID, {
+        await axios.delete('/api/session/leave.php/' + testID, {
           id: this.$root.$data.myID,
         });
       } catch (error) {
