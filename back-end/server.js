@@ -7,6 +7,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: false
 }));
+app.use(express.json());
 
 const mongoose = require('mongoose');
 
@@ -37,9 +38,13 @@ const HelpSession = new mongoose.model('HelpSession', helpSessionSchema);
 
 //Endpoints
 //Delete operation
-app.delete('/session/leave.php', async (req, res) => {
+app.delete('/session/leave.php/:id', async (req, res) => {
+  console.log("ID: " + req.params.id);
   try {
-    await HelpSession.findByIdAndRemove(req.body.id); //FIXME doesn't work
+    // await HelpSession.findByIdAndRemove(req.params.id); //FIXME doesn't work
+    await HelpSession.deleteOne({
+      id: req.params.id
+    });
     res.sendStatus(200);
   } catch (error) {
     console.log(error);

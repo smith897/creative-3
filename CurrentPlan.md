@@ -1,21 +1,9 @@
-Working! API is almost done, but you currently can't leave the queue, and
-updating it requires a refresh.
+Currently, updating the toolbar so you can leave the queue doesn't work. It'll
+take a lot of work, so maybe for now just make it so there's no leaving the queue
+or anything like that, you can ask multiple questions, and on the TA side make
+a button for removing a question from the queue.
 
-Just made it so the Student.vue page has the isHelpedByMe class if you're the TA
-helping them. Give it some good CSS, and make it so when you click help again
-you stop helping them (might need another API call? Not do in this project?)
-
-Then fix the problems below, add some dummy data (since you can only add one
-  question to the queue), and done?
-
-
-Ask a ta
--How to update the page? Currently you have to refresh it. How to update when
- someone else gets on the queue, should it check for updates every 5 seconds?
- (And whenever you make a change/an API call?) How could it do that?
--/sessions/leave.php doesn't work, the findByIdAndRemove doesn't work, wrong kind
- of ID being passed in? I pass in the ID attribute I made, but need a different
- kind? How do I get it?
+Once I add that remove button on the TA side I think it'll be all good to turn in!
 
 
 Notes/Questions for after the project:
@@ -27,3 +15,5 @@ Notes/Questions for after the project:
  and when would we use /destroy? Should we just leave and let the back-end
  do the destroying when everyone's gone, and/or have a destroy command for
  the TA side?
+-Doesn't currently show updates when someone else gets on or leaves the queue.
+ You can use SocketIO to do real-time communication, but it's advanced.

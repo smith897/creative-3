@@ -7,6 +7,10 @@ Vue.config.productionTip = false
 import mockQueue from './mockQueue.js'
 import mockFAQ from './mockFAQ.js'
 
+export const EventBus = new Vue();
+
+
+//FIXME get queue to update based on API call
 let data = {
   queue: mockQueue,
   faq: mockFAQ,
@@ -18,5 +22,10 @@ let data = {
 new Vue({
   router,
   data,
+  methods: {
+    getQueue() {
+      return mockQueue;
+    }
+  },
   render: h => h(App)
 }).$mount('#app')

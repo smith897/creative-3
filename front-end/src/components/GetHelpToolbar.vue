@@ -3,7 +3,7 @@
   <h2>Enter Your Question:</h2>
   <input id="questionEnterText" type="text" class="questionEnterText" v-model="question">
   <div class="getHelpButtonHolder">
-    <h2 class="getHelpButton" @click="updateMeOnQueue()" v-bind:class="{inQueue: getInQueue}">{{buttonText}}</h2>
+    <h2 class="getHelpButton" @click="updateMeOnQueue()" v-bind:class="{inQueue: computeInQueue}">{{buttonText}}</h2>
   </div>
   <p class="questionsRemaining">You have {{questionsRemaining}} questions left today</p>
 </div>
@@ -13,6 +13,15 @@
 import axios from 'axios';
 export default {
   name: 'GetHelpToolbar',
+  computed: {
+    computeInQueue() {
+      console.log(this.$root.$data.inQueue);
+      return this.$root.$data.inQueue;
+    }
+  },
+  created() {
+    this.getInQueue();
+  },
   props: {
     questionsRemaining: Number
   },
@@ -22,46 +31,57 @@ export default {
       buttonText: 'Get Help'
     }
   },
-  computed: {
-    getInQueue() {
-      return this.$root.$data.inQueue;
-    }
-  },
   methods: {
+    async getInQueue() {
+      let response = await axios.get("/foobar/get-public-sessions.php");
+      let sessions = response.data;
+      for (let i = 0; i < sessions.length; i++) {
+        if (sessions[i].id === this.$root.$data.myID) {
+          console.log("Returned true, in queue");
+          this.$root.$data.inQueue = true;
+        }
+      }
+      console.log("Returned false, not in queue");
+      this.$root.$data.inQueue = false;
+    },
+    async joinQueue() {
+      try {
+        await axios.put("/session/create.php/", {
+          id: this.$root.$data.myID,
+          name: this.$root.$data.myName,
+          ta: null,
+          question: this.question,
+          location: "Test" //TODO set to actual location
+        });
+      } catch (error) {
+        console.log(error);
+      }
+      this.question = '';
+      this.buttonText = 'Leave Queue';
+      this.$root.$data.inQueue = true;
+      document.getElementById("questionEnterText").disabled = true;
+    },
+    async leaveQueue() {
+      try {
+        console.log("ID: " + this.$root.$data.myID);
+        let testID = this.$root.$data.myID;
+        await axios.delete('/session/leave.php/' + testID, {
+          id: this.$root.$data.myID, //FIXME the findByIdAndRemove doesn't work, wrong kind of ID being passed in?
+        });
+      } catch (error) {
+        console.log(error);
+      }
+      this.buttonText = 'Get Help'
+      this.$root.$data.inQueue = false;
+      document.getElementById("questionEnterText").disabled = false;
+    },
     async updateMeOnQueue() {
       if (!this.$root.$data.inQueue) {
-        //FIXME working on
-        try {
-          await axios.put("/session/create.php/", {
-            id: this.$root.$data.myID,
-            name: this.$root.$data.myName,
-            ta: null,
-            question: this.question,
-            location: "Test" //TODO set to actual location
-          });
-          //FIXME update the queue here
-          this.$forceUpdate(); //FIXME testing, will this work?
-        } catch (error) {
-          console.log(error);
-        }
-        this.question = '';
-        this.buttonText = 'Leave Queue'
-        this.$root.$data.inQueue = true;
-        document.getElementById("questionEnterText").disabled = true;
+        this.joinQueue();
       } else {
-        try {
-          await axios.delete('/session/leave.php', {
-            id: this.$root.$data.myID, //FIXME the findByIdAndRemove doesn't work, wrong kind of ID being passed in?
-          });
-        } catch (error) {
-          console.log(error);
-        }
-        this.buttonText = 'Get Help'
-        this.$root.$data.inQueue = false;
-        document.getElementById("questionEnterText").disabled = false;
+        this.leaveQueue();
       }
-      //FIXME update the queue here
-      this.$forceUpdate(); //FIXME doesn't work
+      location.reload(); //Reloads the page
     }
   }
 }
@@ -97,6 +117,6 @@ export default {
 }
 
 .inQueue {
-  background-color: #A9A9A9;
+  background-color: #000000;
 }
 </style>
