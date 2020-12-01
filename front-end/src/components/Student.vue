@@ -58,7 +58,7 @@ export default {
   },
   computed: {
     getIsHelped() {
-      return this.isHelped;
+      return !(this.ta === null);
     },
     getIsHelpedByMe() {
       if (!this.fromTA) return false;
@@ -82,27 +82,15 @@ export default {
   },
   methods: {
     async updateHelping() {
-      console.log("Helping the student"); //FIXME for testing
       try {
-        console.log("Giving Student Id: " + this.id);
-        console.log("Giving TA Id:" + this.$root.$data.myID);
         await axios.put("/session/join.php/", {
           StudentID: this.id,
           TaID: this.$root.$data.myID
         });
       } catch (error) {
-        console.log("Error helping student");
         console.log(error);
       }
-      // FIXME refresh the page here?
     },
-    removeItem() {
-      var index = this.$root.$data.queue.indexOf(this); //FIXME doesn't find it, if you want the student to be removed this needs to be fixed
-      console.log(index); //FIXME
-      if (index > -1) {
-        this.$root.$data.queue.splice(index, 1);
-      }
-    }
   }
 }
 </script>
@@ -132,16 +120,16 @@ export default {
 
 .beingHelped {
   background-color: #A9A9A9;
-  border-color: #2c3e50;
+  border-color: black;
+  color: black;
 }
 
 .isMe {
   border-color: #FF3B3F;
 }
 
-/* FIXME testing */
 .isHelpedByMe {
-  border-color: #000000;
+  border-color: #FF3B3F;
 }
 
 .firstRowHolder {

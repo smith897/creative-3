@@ -15,12 +15,17 @@ export default {
   name: 'GetHelpToolbar',
   computed: {
     computeInQueue() {
-      console.log(this.$root.$data.inQueue);
-      return this.$root.$data.inQueue;
+      let queue = this.$root.$data.queue;
+      if (queue === null) return false; //If it hasn't loaded yet
+      for (let i = 0; i < queue.length; i++) {
+        if (queue[i].id === this.$root.$data.myID) {
+          this.setNotInQueue();
+          return true;
+        }
+      }
+      this.setInQueue();
+      return false;
     }
-  },
-  created() {
-    this.getInQueue();
   },
   props: {
     questionsRemaining: Number
@@ -32,17 +37,20 @@ export default {
     }
   },
   methods: {
-    async getInQueue() {
-      let response = await axios.get("/foobar/get-public-sessions.php");
-      let sessions = response.data;
-      for (let i = 0; i < sessions.length; i++) {
-        if (sessions[i].id === this.$root.$data.myID) {
-          console.log("Returned true, in queue");
-          this.$root.$data.inQueue = true;
-        }
+    setNotInQueue() {
+      this.question = '';
+      this.buttonText = 'Leave Queue';
+      this.$root.$data.inQueue = true;
+      if (document.getElementById("questionEnterText") !== null) {
+        document.getElementById("questionEnterText").disabled = true;
       }
-      console.log("Returned false, not in queue");
+    },
+    setInQueue() {
+      this.buttonText = 'Get Help';
       this.$root.$data.inQueue = false;
+      if (document.getElementById("questionEnterText") !== null) {
+        document.getElementById("questionEnterText").disabled = false;
+      }
     },
     async joinQueue() {
       try {
@@ -56,24 +64,16 @@ export default {
       } catch (error) {
         console.log(error);
       }
-      this.question = '';
-      this.buttonText = 'Leave Queue';
-      this.$root.$data.inQueue = true;
-      document.getElementById("questionEnterText").disabled = true;
     },
     async leaveQueue() {
       try {
-        console.log("ID: " + this.$root.$data.myID);
         let testID = this.$root.$data.myID;
         await axios.delete('/session/leave.php/' + testID, {
-          id: this.$root.$data.myID, //FIXME the findByIdAndRemove doesn't work, wrong kind of ID being passed in?
+          id: this.$root.$data.myID,
         });
       } catch (error) {
         console.log(error);
       }
-      this.buttonText = 'Get Help'
-      this.$root.$data.inQueue = false;
-      document.getElementById("questionEnterText").disabled = false;
     },
     async updateMeOnQueue() {
       if (!this.$root.$data.inQueue) {
@@ -117,6 +117,6 @@ export default {
 }
 
 .inQueue {
-  background-color: #000000;
+  background-color: #A9A9A9;
 }
 </style>

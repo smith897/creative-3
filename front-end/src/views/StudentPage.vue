@@ -32,6 +32,7 @@ export default {
       try {
         let response = await axios.get("/foobar/get-public-sessions.php");
         this.sessions = response.data;
+        this.$root.$data.queue = response.data;
       } catch (error) {
         console.log(error);
       }
